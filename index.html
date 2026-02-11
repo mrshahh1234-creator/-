@@ -3,55 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kromka Kalkulyatori</title>
+    <title>Kromka Hisoblagich</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
-
-        :root {
-            --primary-color: #1a73e8;
-            --secondary-color: #00bcd4;
-            --text-color: #333;
-            --light-text-color: #f8f9fa;
-            --background-dark: rgba(0, 0, 0, 0.6);
-            --background-light: rgba(255, 255, 255, 0.85);
-            --card-border-radius: 25px;
-        }
-
+        /* Основной фон с градиентом и текстурой */
         body {
-            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f0f2f5;
-            overflow: hidden; /* Prevent scrollbar from background images */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background-attachment: fixed;
             position: relative;
         }
 
-        /* Background Slider */
-        .background-slider {
+        /* Декоративные элементы фона (имитация рулонов) */
+        body::before {
+            content: "";
             position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            background-size: cover;
-            background-position: center;
-            animation: slideBackground 20s infinite ease-in-out;
-            filter: brightness(0.7); /* Darken background for better contrast */
-            z-index: -1;
+            background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            opacity: 0.1;
+            z-index: 0;
         }
 
-        @keyframes slideBackground {
-            0% { background-image: url('https://via.placeholder.com/1920x1080?text=Kromka+ruloni+1'); }
-            25% { background-image: url('https://via.placeholder.com/1920x1080?text=Kromka+ruloni+2'); }
-            50% { background-image: url('https://via.placeholder.com/1920x1080?text=Kromka+ruloni+3'); }
-            75% { background-image: url('https://via.placeholder.com/1920x1080?text=Kromka+ruloni+4'); }
-            100% { background-image: url('https://via.placeholder.com/1920x1080?text=Kromka+ruloni+1'); }
+        /* Прозрачный слой с полукруглыми углами */
+        .container {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 40px; /* Полукруглые углы */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            width: 90%;
+            max-width: 400px;
+            color: white;
+            text-align: center;
         }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 15px;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            background: #ff9800;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #e68a00;
+            transform: scale(1.02);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            display: none;
+        }
+
+        .result h2 {
+            margin: 0;
+            font-size: 28px;
+            color: #fff;
+        }
+
+        /* Подпись в углу */
+        .footer-brand {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: bold;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Kromka Kalkulyatori</h1>
         
-        /* You can replace placeholder URLs with actual image URLs of edge bands */
-        /* Example:
-        
+        <div class="input-group">
+            <label>Tashqi diametr (D) - mm:</label>
+            <input type="number" id="extD" placeholder="Masalan: 400">
+        </div>
+
+        <div class="input-group">
+            <label>Ichki diametr (d) - mm:</label>
+            <input type="number" id="intD" placeholder="Masalan: 150">
+        </div>
+
+        <div class="input-group">
+            <label>Kromka qalinligi (t) - mm:</label>
+            <input type="number" id="thick" step="0.1" placeholder="Masalan: 2.0">
+        </div>
+
+        <button onclick="calculate()">Hisoblash</button>
+
+        <div id="resultBox" class="result">
+            <p>Rulon uzunligi:</p>
+            <h2 id="resText">0 m.</h2>
+        </div>
+    </div>
+
+    <div class="footer-brand">Mustafayev academy</div>
+
+    <script>
+        function calculate() {
+            const D = parseFloat(document.getElementById('extD').value);
+            const d = parseFloat(document.getElementById('intD').value);
+            const t = parseFloat(document.getElementById('thick').value);
+            
+            if (D && d && t) {
+                if (D <= d) {
+                    alert("Tashqi diametr ichkidan katta bo'lishi kerak!");
+                    return;
+                }
+                
+                // Формула 2: L = (PI * (D^2 - d^2)) / (4 * t)
+                // Делим на 1000 для перевода в метры
+                const L = (Math.PI * (Math.pow(D, 2) - Math.pow(d, 2))) / (4 * t * 1000);
+                
+                document.getElementById('resText').innerText = L.toFixed(2) + " metr";
+                document.getElementById('resultBox').style.display = "block";
+            } else {
+                alert("Iltimos, hamma kataklarni to'ldiring!");
+            }
+        }
+    </script>
+</body>
+</html>
