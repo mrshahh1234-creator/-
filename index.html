@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kromka Hisoblagich</title>
     <style>
-        /* Основной фон с изображением рулона кромки */
         body {
             margin: 0;
             padding: 0;
@@ -13,161 +12,87 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: url('https://i.imgur.com/K0Y7q8U.jpg'); /* Ссылка на изображение рулона */
+            font-family: 'Segoe UI', sans-serif;
+            /* Используем надежное фото с Unsplash (дерево/мебель) */
+            background: url('https://images.unsplash.com/photo-1581421315155-c4193c9d4ef3?q=80&w=1920') no-repeat center center fixed;
             background-size: cover;
-            background-position: center;
-            background-attachment: fixed; /* Фиксирует фон при скролле */
             position: relative;
-            overflow: hidden; /* Скрываем возможные полосы прокрутки, если фон выходит за пределы */
         }
 
-        /* Затемнение и размытие фона для лучшей читаемости текста */
+        /* Темный слой поверх картинки, чтобы текст был виден */
         body::before {
             content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4); /* Полупрозрачный черный слой */
-            backdrop-filter: blur(5px); /* Легкое размытие фона */
-            -webkit-backdrop-filter: blur(5px);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5); 
             z-index: 0;
         }
 
-        /* Прозрачный слой (контейнер) с полукруглыми углами */
         .container {
             position: relative;
-            z-index: 1; /* Выше фонового слоя */
-            background: rgba(255, 255, 255, 0.15); /* Полупрозрачный белый */
-            backdrop-filter: blur(15px); /* Эффект "замороженного стекла" */
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.2); 
+            backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            padding: 40px;
-            border-radius: 40px; /* Полукруглые углы */
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Легкая белая рамка */
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); /* Тень для глубины */
-            width: 90%;
+            padding: 35px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            width: 85%;
             max-width: 400px;
-            color: white; /* Белый текст на полупрозрачном фоне */
+            color: white;
             text-align: center;
         }
 
-        h1 {
-            margin-bottom: 30px;
-            font-size: 28px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Тень для заголовка */
-            color: white; /* Белый цвет заголовка */
-        }
+        h1 { margin-bottom: 25px; font-size: 26px; }
 
-        .input-group {
-            text-align: left;
-            margin-bottom: 20px;
-        }
+        .input-group { text-align: left; margin-bottom: 15px; }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            color: white; /* Белый цвет для надписей полей */
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
+        label { display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold; }
 
         input {
             width: 100%;
-            padding: 12px;
-            border-radius: 15px;
+            padding: 14px;
+            border-radius: 12px;
             border: none;
-            background: rgba(255, 255, 255, 0.9); /* Почти белый, но слегка прозрачный фон ввода */
+            background: white;
             color: #333;
             font-size: 16px;
             box-sizing: border-box;
             outline: none;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); /* Внутренняя тень для полей ввода */
         }
 
         button {
             width: 100%;
             padding: 15px;
             border: none;
-            border-radius: 15px;
-            background: #ff9800; /* Яркая оранжевая кнопка */
+            border-radius: 12px;
+            background: #FF8C00;
             color: white;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 15px;
             transition: 0.3s;
-            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.4); /* Тень кнопки */
-            margin-top: 20px;
         }
 
-        button:hover {
-            background: #e68a00; /* Темнее при наведении */
-            transform: scale(1.02); /* Немного увеличивается */
-        }
+        button:hover { background: #e67e00; }
 
         .result {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.2); /* Полупрозрачный фон для результата */
-            border-radius: 20px;
-            display: none; /* Скрыт по умолчанию */
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.2);
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            display: none;
         }
 
-        .result p {
-            margin: 0 0 10px 0;
-            font-size: 16px;
-            color: white;
-        }
-
-        .result h2 {
-            margin: 0;
-            font-size: 32px;
-            color: #fff; /* Белый результат */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        /* Подпись в углу */
         .footer-brand {
             position: fixed;
-            bottom: 20px;
+            bottom: 15px;
             right: 20px;
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.7); /* Светлый полупрозрачный текст */
-            font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); /* Тень для читаемости */
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
             z-index: 2;
-        }
-
-        /* Адаптивность для мобильных устройств */
-        @media (max-width: 500px) {
-            .container {
-                padding: 25px;
-                border-radius: 25px;
-            }
-            h1 {
-                font-size: 24px;
-                margin-bottom: 20px;
-            }
-            label {
-                font-size: 14px;
-            }
-            input, button {
-                padding: 10px;
-                font-size: 16px;
-                border-radius: 10px;
-            }
-            .result h2 {
-                font-size: 28px;
-            }
-            .footer-brand {
-                font-size: 14px;
-                bottom: 10px;
-                right: 10px;
-            }
         }
     </style>
 </head>
@@ -188,14 +113,14 @@
 
         <div class="input-group">
             <label>Kromka qalinligi (t) - mm:</label>
-            <input type="number" id="thick" step="0.1" placeholder="Masalan: 2.0" inputmode="decimal">
+            <input type="number" id="thick" step="0.01" placeholder="Masalan: 0.4" inputmode="decimal">
         </div>
 
         <button onclick="calculate()">Hisoblash</button>
 
         <div id="resultBox" class="result">
             <p>Rulon uzunligi:</p>
-            <h2 id="resText">0 m.</h2>
+            <h2 id="resText" style="margin: 5px 0 0 0; font-size: 30px;">0 m.</h2>
         </div>
     </div>
 
@@ -206,24 +131,17 @@
             const D = parseFloat(document.getElementById('extD').value);
             const d = parseFloat(document.getElementById('intD').value);
             const t = parseFloat(document.getElementById('thick').value);
-            const resultBox = document.getElementById('resultBox');
             
-            if (D > 0 && d > 0 && t > 0) {
+            if (D && d && t) {
                 if (D <= d) {
-                    alert("Tashqi diametr ichki diametrdan katta bo'lishi kerak!");
-                    resultBox.style.display = "none";
+                    alert("Xato: Tashqi diametr ichkidan katta bo'lishi kerak!");
                     return;
                 }
-                
-                // Формула 2: L = (PI * (D^2 - d^2)) / (4 * t)
-                // Делим на 1000 для перевода в метры
                 const L = (Math.PI * (Math.pow(D, 2) - Math.pow(d, 2))) / (4 * t * 1000);
-                
-                document.getElementById('resText').innerText = L.toFixed(2) + " metr";
-                resultBox.style.display = "block"; // Показываем результат
+                document.getElementById('resText').innerText = L.toFixed(2) + " m.";
+                document.getElementById('resultBox').style.display = "block";
             } else {
-                alert("Iltimos, barcha maydonlarni to'g'ri raqamlar bilan to'ldiring!");
-                resultBox.style.display = "none"; // Скрываем, если данные неполные/некорректные
+                alert("Iltimos, hamma kataklarni to'ldiring!");
             }
         }
     </script>
